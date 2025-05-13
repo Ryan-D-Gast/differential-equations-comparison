@@ -46,7 +46,28 @@ r_2 &= \sqrt{(x-1+\mu)^2 + y^2 + z^2}
 \end{aligned}
 $$
 
-### 3. Lorenz System (Long-running Benchmark)
+### 3. Two-Body Problem (Earth Orbit)
+
+The Two-Body Problem simulates a satellite in orbit around a central body (like Earth) under gravitational influence, described by:
+
+$$
+\begin{aligned}
+\dot{x} &= v_x \\
+\dot{y} &= v_y \\
+\dot{z} &= v_z \\
+\dot{v}_x &= -\frac{\mu x}{r^3} \\
+\dot{v}_y &= -\frac{\mu y}{r^3} \\
+\dot{v}_z &= -\frac{\mu z}{r^3}
+\end{aligned}
+$$
+
+Where:
+- $\mu$ is the gravitational parameter (G·M, where G is the gravitational constant and M is the mass of the central body)
+- $r = \sqrt{x^2 + y^2 + z^2}$ is the distance from the origin
+
+This problem has a known analytical solution for circular orbits, allowing us to compare numerical results with the exact solution. The simulation runs for 10 complete orbits to provide a medium-duration benchmark that's more intensive than the short simulations but not as extreme as the Lorenz system.
+
+### 4. Lorenz System (Long-running Benchmark)
 
 The Lorenz system is a set of ordinary differential equations that exhibit chaotic behavior. This problem is designed as a long-running benchmark to better evaluate performance differences between implementations. It is described by:
 
@@ -79,6 +100,9 @@ differential-equations-comparison/
 ├── cr3bp/                # Circular Restricted Three-Body Problem
 │   ├── rust/             # Rust implementation
 │   └── fortran/          # Fortran implementation
+├── twobody/              # Two-Body Problem (Earth orbit)
+│   ├── rust/             # Rust implementation
+│   └── fortran/          # Fortran implementation
 ├── lorenz/               # Lorenz system (long-running benchmark)
 │   ├── rust/             # Rust implementation
 │   └── fortran/          # Fortran implementation
@@ -107,7 +131,7 @@ This test was on a Windows 10 machine with an Intel i5-9400F @ 2.90Ghz and 16GB 
 | Van der Pol Osc. | Fortran | 22.7 ± 1.8 | 21.4 | 59.2 | 1.12 ± 0.13 |
 | CR3BP | Rust | 19.6 ± 2.2 | 18.4 | 58.0 | 1.00 |
 | CR3BP | Fortran | 21.2 ± 1.9 | 20.0 | 60.5 | 1.08 ± 0.16 |
+| Two-Body Problem | Rust | 40.2 ± 1.3 | 38.8 | 44.5 | 1.00 |
+| Two-Body Problem | Fortran | 40.9 ± 0.9 | 39.6 | 43.6 | 1.02 ± 0.04 |
 | Lorenz System | Rust | 235.0 ± 2.0 | 232.9 | 245.3 | 1.00 |
 | Lorenz System | Fortran | 247.0 ± 7.3 | 243.8 | 296.4 | 1.05 ± 0.03 |
-
-We can see that the Rust implementation is about 10% faster than the Fortran implementation for both short problems. The long-running Lorenz system benchmark shows that Rust maintains its performance advantage with approximately 5% better execution time compared to Fortran.

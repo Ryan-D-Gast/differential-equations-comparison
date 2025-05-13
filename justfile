@@ -23,6 +23,11 @@ build:
     cd lorenz && cd rust && cargo build --release
     @mkdir -p lorenz/fortran/target
     gfortran {{OPT}} -o lorenz/fortran/target/lorenz lorenz/fortran/lorenz.f lib/dop853.f -w
+    
+    @echo "Building two-body problem implementations..."
+    cd twobody && cd rust && cargo build --release
+    @mkdir -p twobody/fortran/target
+    gfortran {{OPT}} -o twobody/fortran/target/twobody twobody/fortran/twobody.f lib/dop853.f -w
 
 # Run both implementations
 run: build
@@ -43,6 +48,12 @@ run: build
     ./lorenz/rust/target/release/lorenz
     @echo "Running Fortran implementation:"
     ./lorenz/fortran/target/lorenz
+    
+    @echo "Two-Body Problem (Earth Orbit)"
+    @echo "Running Rust implementation:"
+    ./twobody/rust/target/release/twobody
+    @echo "Running Fortran implementation:"
+    ./twobody/fortran/target/twobody
 
 # Benchmark both implementations
 bench: build
@@ -74,6 +85,15 @@ bench: build
         --export-json target/lorenz.json \
         './lorenz/rust/target/release/lorenz' \
         './lorenz/fortran/target/lorenz'
+        
+    @echo "Benchmarking Two-Body Problem (Earth Orbit) implementations..."
+    hyperfine -i -N \
+        --warmup {{WARMUP}} \
+        --runs {{RUNS}} \
+        --export-markdown target/twobody.md \
+        --export-json target/twobody.json \
+        './twobody/rust/target/release/twobody' \
+        './twobody/fortran/target/twobody'
 
 plot:
     @echo "Plotting benchmark results..."
@@ -81,10 +101,12 @@ plot:
     python ./plot_histogram.py ./target/vanderpol.json --type barstacked --labels Rust,Fortran --title "Van der Pol Oscillator" --legend-location "upper right" --output ./target/vanderpol_histogram.png
     python ./plot_histogram.py ./target/cr3bp.json --type barstacked --labels Rust,Fortran --title "CR3BP" --legend-location "upper right" --output ./target/cr3bp_histogram.png
     python ./plot_histogram.py ./target/lorenz.json --type barstacked --labels Rust,Fortran --title "Lorenz System (Long-running)" --legend-location "upper right" --output ./target/lorenz_histogram.png
+    python ./plot_histogram.py ./target/twobody.json --type barstacked --labels Rust,Fortran --title "Two-Body Problem (Earth Orbit)" --legend-location "upper right" --output ./target/twobody_histogram.png
     @echo "Whisker plots..."
     python ./plot_whisker.py ./target/vanderpol.json --labels Rust,Fortran --title "Van der Pol Oscillator" --output ./target/vanderpol_whisker.png
     python ./plot_whisker.py ./target/cr3bp.json --labels Rust,Fortran --title "CR3BP" --output ./target/cr3bp_whisker.png
     python ./plot_whisker.py ./target/lorenz.json --labels Rust,Fortran --title "Lorenz System (Long-running)" --output ./target/lorenz_whisker.png
+    python ./plot_whisker.py ./target/twobody.json --labels Rust,Fortran --title "Two-Body Problem (Earth Orbit)" --output ./target/twobody_whisker.png
 
 
 # Clean all project files and benchmark results
@@ -92,9 +114,12 @@ clean:
     cd cr3bp && cd rust && cargo clean
     cd lorenz && cd rust && cargo clean
     cd vanderpol && cd rust && cargo clean
+    cd twobody && cd rust && cargo clean
     rm -f ./vanderpol/fortran/target/vanderpol
     rm -f ./lorenz/fortran/target/lorenz
     rm -f ./cr3bp/fortran/target/cr3bp
-    rm -f ./target/vanderpol.md ./target/vander
-    rm -f ./target/lorenz.md ./target/lorenz.jsonpol.json
+    rm -f ./twobody/fortran/target/twobody
+    rm -f ./target/vanderpol.md ./target/vanderpol.json
+    rm -f ./target/lorenz.md ./target/lorenz.json
     rm -f ./target/cr3bp.md ./target/cr3bp.json
+    rm -f ./target/twobody.md ./target/twobody.json
