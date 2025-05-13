@@ -38,6 +38,7 @@ $$
 $$
 
 Where:
+
 $$
 \begin{aligned}
 r_1 &= \sqrt{(x+\mu)^2 + y^2 + z^2} \\
