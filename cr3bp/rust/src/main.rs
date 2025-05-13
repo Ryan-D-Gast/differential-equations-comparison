@@ -1,5 +1,4 @@
-use differential_equations::ode::*;
-use differential_equations::derive::State;
+use differential_equations::prelude::*;
 
 // Circular Restricted Three Body Problem (CR3BP)
 pub struct Cr3bp {
@@ -62,7 +61,7 @@ fn main() {
         vy: -0.102950816739606,
         vz: 0.0
     };
-    let cr3bp_ivp = IVP::new(ode, t0, tf, sv);
+    let cr3bp_ivp = ODEProblem::new(ode, t0, tf, sv);
 
     // Solve the ODE
     let result = cr3bp_ivp.solve(&mut solver).unwrap();

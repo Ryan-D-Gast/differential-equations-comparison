@@ -25,9 +25,9 @@ checksum = "b6b1fc10dbac614ebc03540c9dbd60e83887fda27794998c6528f1782047d540"
 
 [[package]]
 name = "differential-equations"
-version = "0.1.4"
+version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "309e744dcb3470a4f2cfe169d92aa5bd8defccc2d0e388244c8f1b469802fee6"
+checksum = "3952086c60c0a59879b91ec00fe4e7ac42547d0265df0979039b2b9d1dbe6e27"
 dependencies = [
  "differential-equations-derive",
  "nalgebra",
@@ -36,9 +36,9 @@ dependencies = [
 
 [[package]]
 name = "differential-equations-derive"
-version = "0.1.0"
+version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "16cc8125d5607677498abb24a7790adfaf55752ee05d0ca7968563b74b88a3a6"
+checksum = "0acf07291ba067d1ca3cab93972874b9aec3adef990b60b899e8f5dce14f13a4"
 dependencies = [
  "proc-macro2",
  "quote",

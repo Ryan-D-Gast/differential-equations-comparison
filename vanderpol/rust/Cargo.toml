@@ -4,5 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-differential-equations = "0.1.4"
+differential-equations = "0.1.8"
 nalgebra = "0.33.2"

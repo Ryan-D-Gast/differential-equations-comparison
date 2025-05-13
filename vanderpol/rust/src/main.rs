@@ -1,4 +1,4 @@
-use differential_equations::ode::*;
+use differential_equations::prelude::*;
 use nalgebra::Vector2;
 
 // Van der Pol oscillator ODE
@@ -27,7 +27,7 @@ fn main() {
     let t0 = 0.0;
     let tf = 1000.0;
     let y0 = Vector2::new(0.0, 0.1);
-    let ivp = IVP::new(system, t0, tf, y0);
+    let ivp = ODEProblem::new(system, t0, tf, y0);
     
     // Solve the ODE
     let result = ivp.solve(&mut solver).unwrap();
