@@ -65,6 +65,8 @@ Where:
 
 The simulation runs for an extended time period (t = 10,000) to stress test the solvers.
 
+> **Note on Divergent Results**: The Lorenz system is inherently chaotic, meaning implementations in different languages will naturally produce divergent results over long time periods, even when using the same numerical algorithm. This is expected behavior due to tiny differences in floating-point handling, and doesn't indicate an error in either implementation. When the `tf/xend` was set to 10 seconds for both implementations the results were the same. Because of this comparing the results of the Lorenz system isn't perfect but that is why you compare many different equations to see the trend!
+
 ## Directory Structure
 
 ```
