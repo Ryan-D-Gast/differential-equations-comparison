@@ -52,7 +52,7 @@ fn main() {
 
     // Initial value problem
     let t0 = 0.0;
-    let tf = 10.0 * 1.509263667286943;
+    let tf = 100.0 * 1.509263667286943;
     let sv = StateVector {
         x: 1.021881345465263,
         y: 0.0,

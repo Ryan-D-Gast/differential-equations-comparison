@@ -79,9 +79,9 @@ This test was on a Windows 10 machine with an Intel i5-9400F @ 2.90Ghz and 16GB 
 
 | Problem | Implementation | Mean [ms] | Min [ms] | Max [ms] | Relative |
 | :---: |:---:|---:|---:|---:|---:|
-| Van der Pol Osc. | Rust | 8.8 ± 0.3 | 8.2 | 10.3 | 1.00 |
-| Van der Pol Osc. | Fortran | 12.5 ± 2.9 | 11.5 | 75.1 | 1.41 ± 0.33 |
-| CR3BP | Rust | 7.0 ± 0.4 | 6.5 | 8.6 | 1.00 |
-| CR3BP | Fortran | 9.8 ± 1.8 | 9.1 | 46.0 | 1.40 ± 0.26 |
+| Van der Pol Osc. | Rust | 20.3 ± 1.7 | 18.7 | 51.5 | 1.00 |
+| Van der Pol Osc. | Fortran | 22.7 ± 1.8 | 21.4 | 59.2 | 1.12 ± 0.13 |
+| CR3BP | Rust | 18.5 ± 2.1 | 17.2 | 48.5 | 1.00 |
+| CR3BP | Fortran | 20.4 ± 2.1 | 18.9 | 52.2 | 1.10 ± 0.17 |
 
 We can see that the Rust implementation is about 10% faster than the Fortran implementation for both problems.

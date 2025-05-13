@@ -9,7 +9,7 @@ C     PROGRAM TO SOLVE CR3BP USING HAIRER DOP853
 C     Set parameters to match Rust version
       RPAR(1) = 0.012150585609624D0 ! Earth-Moon mass ratio
       X = 0.0D0                      ! t0 = 0.0
-      XEND = 10.0D0 * 1.509263667286943D0 ! tf = 3 * (orbital period)
+      XEND = 100.0D0 * 1.509263667286943D0 ! tf = 3 * (orbital period)
       
 C     Initial state vector (x, y, z, vx, vy, vz)
       Y(1) = 1.021881345465263D0 ! x
