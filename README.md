@@ -46,6 +46,25 @@ r_2 &= \sqrt{(x-1+\mu)^2 + y^2 + z^2}
 \end{aligned}
 $$
 
+### 3. Lorenz System (Long-running Benchmark)
+
+The Lorenz system is a set of ordinary differential equations that exhibit chaotic behavior. This problem is designed as a long-running benchmark to better evaluate performance differences between implementations. It is described by:
+
+$$
+\begin{aligned}
+\dot{x} &= \sigma(y - x) \\
+\dot{y} &= x(\rho - z) - y \\
+\dot{z} &= xy - \beta z
+\end{aligned}
+$$
+
+Where:
+- $\sigma = 10$
+- $\rho = 28$
+- $\beta = 8/3$
+
+The simulation runs for an extended time period (t = 10,000) to stress test the solvers.
+
 ## Directory Structure
 
 ```
@@ -56,6 +75,9 @@ differential-equations-comparison/
 │   ├── rust/             # Rust implementation
 │   └── fortran/          # Fortran implementation
 ├── cr3bp/                # Circular Restricted Three-Body Problem
+│   ├── rust/             # Rust implementation
+│   └── fortran/          # Fortran implementation
+├── lorenz/               # Lorenz system (long-running benchmark)
 │   ├── rust/             # Rust implementation
 │   └── fortran/          # Fortran implementation
 ├── target/               # Benchmark results
@@ -81,7 +103,9 @@ This test was on a Windows 10 machine with an Intel i5-9400F @ 2.90Ghz and 16GB 
 | :---: |:---:|---:|---:|---:|---:|
 | Van der Pol Osc. | Rust | 20.3 ± 1.7 | 18.7 | 51.5 | 1.00 |
 | Van der Pol Osc. | Fortran | 22.7 ± 1.8 | 21.4 | 59.2 | 1.12 ± 0.13 |
-| CR3BP | Rust | 18.5 ± 2.1 | 17.2 | 48.5 | 1.00 |
-| CR3BP | Fortran | 20.4 ± 2.1 | 18.9 | 52.2 | 1.10 ± 0.17 |
+| CR3BP | Rust | 19.6 ± 2.2 | 18.4 | 58.0 | 1.00 |
+| CR3BP | Fortran | 21.2 ± 1.9 | 20.0 | 60.5 | 1.08 ± 0.16 |
+| Lorenz System | Rust | 235.0 ± 2.0 | 232.9 | 245.3 | 1.00 |
+| Lorenz System | Fortran | 247.0 ± 7.3 | 243.8 | 296.4 | 1.05 ± 0.03 |
 
-We can see that the Rust implementation is about 10% faster than the Fortran implementation for both problems.
+We can see that the Rust implementation is about 10% faster than the Fortran implementation for both short problems. The long-running Lorenz system benchmark shows that Rust maintains its performance advantage with approximately 5% better execution time compared to Fortran.

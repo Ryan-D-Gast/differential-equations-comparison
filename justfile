@@ -1,5 +1,5 @@
 # Common variables
-RUNS := "500"
+RUNS := "50"
 WARMUP := "5"
 OPT := "-O3"
 
@@ -18,6 +18,11 @@ build:
     cd cr3bp && cd rust && cargo build --release
     @mkdir -p cr3bp/fortran/target
     gfortran {{OPT}} -o cr3bp/fortran/target/cr3bp cr3bp/fortran/cr3bp.f lib/dop853.f -w
+    
+    @echo "Building lorenz implementations..."
+    cd lorenz && cd rust && cargo build --release
+    @mkdir -p lorenz/fortran/target
+    gfortran {{OPT}} -o lorenz/fortran/target/lorenz lorenz/fortran/lorenz.f lib/dop853.f -w
 
 # Run both implementations
 run: build
@@ -32,6 +37,12 @@ run: build
     ./cr3bp/rust/target/release/cr3bp
     @echo "Running Fortran implementation:"
     ./cr3bp/fortran/target/cr3bp
+    
+    @echo "Lorenz System (Long-running Benchmark)"
+    @echo "Running Rust implementation:"
+    ./lorenz/rust/target/release/lorenz
+    @echo "Running Fortran implementation:"
+    ./lorenz/fortran/target/lorenz
 
 # Benchmark both implementations
 bench: build
@@ -54,20 +65,36 @@ bench: build
         --export-json target/cr3bp.json \
         './cr3bp/rust/target/release/cr3bp' \
         './cr3bp/fortran/target/cr3bp'
+        
+    @echo "Benchmarking Lorenz System (Long-running) implementations..."
+    hyperfine -i -N \
+        --warmup {{WARMUP}} \
+        --runs {{RUNS}} \
+        --export-markdown target/lorenz.md \
+        --export-json target/lorenz.json \
+        './lorenz/rust/target/release/lorenz' \
+        './lorenz/fortran/target/lorenz'
 
 plot:
     @echo "Plotting benchmark results..."
     @echo "Histgrams plots..."
     python ./plot_histogram.py ./target/vanderpol.json --type barstacked --labels Rust,Fortran --title "Van der Pol Oscillator" --legend-location "upper right" --output ./target/vanderpol_histogram.png
     python ./plot_histogram.py ./target/cr3bp.json --type barstacked --labels Rust,Fortran --title "CR3BP" --legend-location "upper right" --output ./target/cr3bp_histogram.png
+    python ./plot_histogram.py ./target/lorenz.json --type barstacked --labels Rust,Fortran --title "Lorenz System (Long-running)" --legend-location "upper right" --output ./target/lorenz_histogram.png
     @echo "Whisker plots..."
     python ./plot_whisker.py ./target/vanderpol.json --labels Rust,Fortran --title "Van der Pol Oscillator" --output ./target/vanderpol_whisker.png
     python ./plot_whisker.py ./target/cr3bp.json --labels Rust,Fortran --title "CR3BP" --output ./target/cr3bp_whisker.png
+    python ./plot_whisker.py ./target/lorenz.json --labels Rust,Fortran --title "Lorenz System (Long-running)" --output ./target/lorenz_whisker.png
+
 
 # Clean all project files and benchmark results
 clean:
+    cd cr3bp && cd rust && cargo clean
+    cd lorenz && cd rust && cargo clean
     cd vanderpol && cd rust && cargo clean
     rm -f ./vanderpol/fortran/target/vanderpol
+    rm -f ./lorenz/fortran/target/lorenz
     rm -f ./cr3bp/fortran/target/cr3bp
-    rm -f ./target/vanderpol.md ./target/vanderpol.json
+    rm -f ./target/vanderpol.md ./target/vander
+    rm -f ./target/lorenz.md ./target/lorenz.jsonpol.json
     rm -f ./target/cr3bp.md ./target/cr3bp.json
